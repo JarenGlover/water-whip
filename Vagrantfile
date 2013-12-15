@@ -14,7 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-   config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -106,13 +106,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    config.vm.provision :chef_client do |chef|
      chef.chef_server_url = "https://api.opscode.com/organizations/illmatic"
      chef.validation_key_path = "./.chef/illmatic-validator.pem"
+     chef.validation_client_name = "illmatic-validator"
+     chef.node_name = "fuel_vm"
    end
   #
+
+  # because of the opscode vm doesn't have the chef plugin ..
+    config.omnibus.chef_version = :latest
+
   # If you're using the Opscode platform, your validator client is
   # ORGNAME-validator, replacing ORGNAME with your organization name.
   #
   # If you have your own Chef Server, the default validation client name is
   # chef-validator, unless you changed the configuration.
   #
-    chef.validation_client_name = "illmatic-validator"
+  # chef.validation_client_name = "illmatic-validator"
 end
